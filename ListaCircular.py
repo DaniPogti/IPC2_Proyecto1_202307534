@@ -1,0 +1,3 @@
+class CircularLista: 
+    pass
+    

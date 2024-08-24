@@ -2,8 +2,9 @@ import xml.etree.ElementTree as ET
 from xml.dom import minidom
 from matrices import matriz
 from datos import data
+from ListaCircular import CircularLista
+from ListaSimple import Lista_Enlazada_Simple
 
-lista = []
 
 def Menu(): #Crear el menu en consola 
     print('=========Menu Principal=========')
@@ -29,30 +30,20 @@ def LeerArchivo(rutaArchivo):
         nFila = int(nombre_matriz.get('n'))#obtener el atributo n fila de la matriz
         mColumna = int(nombre_matriz.get('m'))#obtener el atributo m cplumna de la matriz
         
-        Lista_matriz = 0 #aqui me quede
+        lista = Lista_Enlazada_Simple()
         
-        for datos_matriz in nombre_matriz.findall('dato'):
-            posx = int(datos_matriz.get('x')) - 1 #obtener el atributo de los datos de la posision x
-            posy = int(datos_matriz.get('y')) - 1 #obtener el atributo de los datos de la posision y
-            contenido = int(datos_matriz.text) #obtener el valor de cada atributa de dato 
-            matrix[posx][posy] = contenido 
+        for dato in nombre_matriz.findall('dato'):
+            x = int(dato.get('x'))
+            y = int(dato.get('y'))
+            valor = int(dato.text)
+            print(f"Insertando: x={x}, y={y}, valor={valor}")
+            lista.insertar(x, y, valor)
             
-            '''
-            IMPORTANTE!!!!!!!
-            Las matrices aun no se obtienen como listas enlazadas eso queda pendiente de modificar
-            IMPORTANTE!!!!!!!
-            '''
-
+        print(f"Matriz: {nombreMatriz}")
         
-        matrizObj = matriz(nombreMatriz, nFila, mColumna, matrix) #almacena los atributos dentro del objeto matriz
-        lista.append(matrizObj)
+        lista.imprimir()
         
     print('Datos leídos con éxito con ElementTree')
-    for m in lista:
-        print('\n', m)
-        for fila in m.datos:
-            print(' | '.join(map(str, fila)))
-        print()
         
 
 if __name__ == '__main__':

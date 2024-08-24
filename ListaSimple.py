@@ -1,17 +1,25 @@
 from NODO import nodo
+from datoNodo import NodoDato
 
 class Lista_Enlazada_Simple:
-    def __init__(self) :
+    def __init__(self):
         self.cabeza = None
-        self.size = 0
         
-    def insertar(self, dato):
-        nodo_nuevo = nodo(dato) #se crea un nuevo nodo
-        if self.cabeza == None: #si la lista esta vacia
-            self.cabeza = nodo_nuevo #crea nuevo nodo
-        else: #si ya existe un dato dentro de la lista
-            actual = self.cabeza #obtener el primero de la lista
-            while actual.siguiente != None:
+    def insertar(self, posx, posy, valor):
+        self.posx = posx 
+        self.posy = posy
+        self.valor = valor
+        nodoNuevo = NodoDato(posx, posy, valor)
+        if self.cabeza == None:
+            self.cabeza = nodoNuevo
+        else:
+            actual = self.cabeza
+            while actual.siguiente:
                 actual = actual.siguiente
-            actual.siguiente = nodo_nuevo
-        self.size += 1
+            actual.siguiente = nodoNuevo
+            
+    def imprimir(self):
+        actual = self.cabeza
+        while actual: 
+            print(f"Posición: ({actual.posx}, {actual.posy})---- Valor: {actual.valor}")
+            actual = actual.siguiente
