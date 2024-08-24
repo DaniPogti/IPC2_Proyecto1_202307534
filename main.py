@@ -6,14 +6,14 @@ from datos import data
 lista = []
 
 def Menu(): #Crear el menu en consola 
-    print('======Menu Principal======')
+    print('=========Menu Principal=========')
     print('1. Cargar Archivo')
     print('2. Procesar Archivo')
     print('3. Escribir Archivo de Salida')
     print('4. Mostrar datos del Estudiante')
     print('5. Generar Grafica')
     print('6. Salida')
-    print('==========================')
+    print('================================')
     
     opcion = int(input('Ingresar opcion: ')) # obtiene el dato en la consola
     return opcion
@@ -23,21 +23,28 @@ def LeerArchivo(rutaArchivo):
     root = arbol.getroot() #obtiene la raiz matriz
     print(root.tag)#imprime la ruta de larchivo
     
+    
     for nombre_matriz in root.findall('matriz'):
         nombreMatriz = nombre_matriz.get('nombre') #obtener el atributo nombre de la matriz
-        nFila = int(nombre_matriz.get('n'))
-        mColumna = int(nombre_matriz.get('m'))
+        nFila = int(nombre_matriz.get('n'))#obtener el atributo n fila de la matriz
+        mColumna = int(nombre_matriz.get('m'))#obtener el atributo m cplumna de la matriz
         
-        matrix= [[0 for _ in range(mColumna)] for _ in range(nFila)]
+        Lista_matriz = 0 #aqui me quede
         
         for datos_matriz in nombre_matriz.findall('dato'):
-            posx = int(datos_matriz.get('x')) - 1
-            posy = int(datos_matriz.get('y')) - 1
-            contenido = int(datos_matriz.text)
-            matrix[posx][posy] = contenido
+            posx = int(datos_matriz.get('x')) - 1 #obtener el atributo de los datos de la posision x
+            posy = int(datos_matriz.get('y')) - 1 #obtener el atributo de los datos de la posision y
+            contenido = int(datos_matriz.text) #obtener el valor de cada atributa de dato 
+            matrix[posx][posy] = contenido 
+            
+            '''
+            IMPORTANTE!!!!!!!
+            Las matrices aun no se obtienen como listas enlazadas eso queda pendiente de modificar
+            IMPORTANTE!!!!!!!
+            '''
 
         
-        matrizObj = matriz(nombreMatriz, nFila, mColumna, matrix)
+        matrizObj = matriz(nombreMatriz, nFila, mColumna, matrix) #almacena los atributos dentro del objeto matriz
         lista.append(matrizObj)
         
     print('Datos leídos con éxito con ElementTree')
