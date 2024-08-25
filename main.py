@@ -4,6 +4,7 @@ from matrices import matriz
 from datos import data
 from ListaCircular import CircularLista
 from ListaSimple import Lista_Enlazada_Simple
+from ListaDeMatrices import ListaMatriz
 
 
 def Menu(): #Crear el menu en consola 
@@ -20,10 +21,11 @@ def Menu(): #Crear el menu en consola
     return opcion
 
 def LeerArchivo(rutaArchivo):
-    global lista
     arbol = ET.parse(rutaArchivo) #parsea el archivo xml
     root = arbol.getroot() #obtiene la raiz matriz
     print(root.tag)#imprime la ruta de larchivo
+    
+    Matriz = ListaMatriz()
     
     
     for nombre_matriz in root.findall('matriz'):
@@ -43,14 +45,16 @@ def LeerArchivo(rutaArchivo):
             lista.insertar(x, y, valor)
             
         print(f"Matriz: {nombreMatriz}")
-        
+        Matriz.insertarmatrix(lista)
         lista.imprimir()
         
     print('Datos leídos con éxito con ElementTree')
+    return Matriz
         
 
 if __name__ == '__main__':
     opcion = 0
+    cargada = None
     while opcion != 6:
         opcion = Menu()
         
@@ -59,12 +63,21 @@ if __name__ == '__main__':
             print('Se eligio la opcion 1')
             rutaArchivo = input("Ingrese la ruta del archivo: ")
             LeerArchivo(rutaArchivo)
+            cargada = LeerArchivo(rutaArchivo)
             
         elif opcion == 2:
             print('-------------------------------------------------------------')
             print('Se eligio la opcion 2')
-            lista.imprimir()
-            pass
+            if cargada:
+                print("Matrices originales////////////////////////////")
+                cargada.imprimir()
+                cargada.cambiarDatos()
+                print("Matrices Nuevas////////////////////////////////")
+                cargada.imprimir()
+                
+            else:
+                print('No hay matrices cargadas.')
+            
         elif opcion == 3:
             print('-------------------------------------------------------------')
             print('Se eligio la opcion 3')

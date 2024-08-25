@@ -42,3 +42,14 @@ class Lista_Enlazada_Simple:
                 if not encontrado:
                     print("| ", 0, end=" |")
             print()
+            
+    def MatrizPatrones(self):
+        actual = self.cabeza
+        if not actual:
+            return
+        while True:
+            if actual.valor != 0:
+                actual.valor = 1
+            actual = actual.siguiente
+            if actual == self.cabeza: 
+                break
