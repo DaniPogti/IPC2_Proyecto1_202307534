@@ -20,6 +20,7 @@ def Menu(): #Crear el menu en consola
     return opcion
 
 def LeerArchivo(rutaArchivo):
+    global lista
     arbol = ET.parse(rutaArchivo) #parsea el archivo xml
     root = arbol.getroot() #obtiene la raiz matriz
     print(root.tag)#imprime la ruta de larchivo
@@ -30,7 +31,9 @@ def LeerArchivo(rutaArchivo):
         nFila = int(nombre_matriz.get('n'))#obtener el atributo n fila de la matriz
         mColumna = int(nombre_matriz.get('m'))#obtener el atributo m cplumna de la matriz
         
-        lista = Lista_Enlazada_Simple()
+        print(f"Procesando Matriz: {nombreMatriz}| Num de Filas: {nFila}, Num Columnas: {mColumna}")
+        
+        lista = Lista_Enlazada_Simple(nFila, mColumna, nombreMatriz)
         
         for dato in nombre_matriz.findall('dato'):
             x = int(dato.get('x'))
@@ -60,6 +63,7 @@ if __name__ == '__main__':
         elif opcion == 2:
             print('-------------------------------------------------------------')
             print('Se eligio la opcion 2')
+            lista.imprimir()
             pass
         elif opcion == 3:
             print('-------------------------------------------------------------')
