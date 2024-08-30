@@ -25,31 +25,36 @@ def LeerArchivo(rutaArchivo):
     root = arbol.getroot() #obtiene la raiz matriz
     print(root.tag)#imprime la ruta de larchivo
     
-    Matriz = ListaMatriz()
+    Matriz = ListaMatriz()# contiene la lista enlazada de las Matrices
     
     
-    for nombre_matriz in root.findall('matriz'):
+    for nombre_matriz in root.findall('matriz'): #iterar y busca segun la etiqueta de matriz en el xml
         nombreMatriz = nombre_matriz.get('nombre') #obtener el atributo nombre de la matriz
         nFila = int(nombre_matriz.get('n'))#obtener el atributo n fila de la matriz
         mColumna = int(nombre_matriz.get('m'))#obtener el atributo m cplumna de la matriz
         
-        print(f"Procesando Matriz: {nombreMatriz}| Num de Filas: {nFila}, Num Columnas: {mColumna}")
         
+        
+        #imprimen, m y nombre de matriz leida
+        #print(f"Procesando Matriz: {nombreMatriz}| Num de Filas: {nFila}, Num Columnas: {mColumna}")
+        
+        #envia n, m y nombre a lista enlazada que lo contendra en una varible
         lista = Lista_Enlazada_Simple(nFila, mColumna, nombreMatriz)
         
-        for dato in nombre_matriz.findall('dato'):
-            x = int(dato.get('x'))
-            y = int(dato.get('y'))
-            valor = int(dato.text)
-            print(f"Insertando: x={x}, y={y}, valor={valor}")
-            lista.insertar(x, y, valor)
+        #dentro de la busqueda de 'matriz' por cada matriz encontrada busca etiqueta de 'dato' que contiene X, Y y el valor
+        for dato in nombre_matriz.findall('dato'): 
+            x = int(dato.get('x')) # en varible x obtiene el atributo de 'x' dentro de 'dato' como entero
+            y = int(dato.get('y')) # en varible y obtiene el atributo de 'y' dentro de 'dato' como entero
+            valor = int(dato.text) # dentro de la etiqueta 'dato' obtiene el texto que se encuentra adentro de y lo amacena en valor
+            #print(f"Insertando: x={x}, y={y}, valor={valor}") #imprimir para verificar que si obtenga los datos
+            lista.insertar(x, y, valor) #lista contiene la lsita enlazada simple, manda los datos por el metodo insertar
             
-        print(f"Matriz: {nombreMatriz}")
-        Matriz.insertarmatrix(lista)
+        print(f"Matriz: {nombreMatriz}") # imprime el nombre de la matriz leida
+        Matriz.insertarmatrix(lista) #lista enlazada de matricecs inserta los datos leidos por la lista enlazada 'lista' 
         lista.imprimir()
         
     print('Datos leídos con éxito con ElementTree')
-    return Matriz
+    return Matriz #retorna matriz almacenada
         
 
 if __name__ == '__main__':
@@ -62,18 +67,19 @@ if __name__ == '__main__':
             print('-------------------------------------------------------------')
             print('Se eligio la opcion 1')
             rutaArchivo = input("Ingrese la ruta del archivo: ")
-            LeerArchivo(rutaArchivo)
-            cargada = LeerArchivo(rutaArchivo)
+            
+            cargada = LeerArchivo(rutaArchivo) #verifica que ya se cargaron datos
             
         elif opcion == 2:
             print('-------------------------------------------------------------')
             print('Se eligio la opcion 2')
             if cargada:
+                #toda vez exista algun archivo cargado
                 print("Matrices originales////////////////////////////")
-                cargada.imprimir()
-                cargada.cambiarDatos()
+                cargada.imprimir() #imprimir originales
+                cargada.cambiarDatos()#cambia originales a 1 y 0
                 print("Matrices Nuevas////////////////////////////////")
-                cargada.imprimir()
+                cargada.imprimir()# imprime las cambiadas
                 
             else:
                 print('No hay matrices cargadas.')

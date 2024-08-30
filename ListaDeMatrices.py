@@ -29,12 +29,13 @@ class ListaMatriz:
             if actual == self.cabeza:
                 break
             
-    def cambiarDatos(self):  # Método corregido
+    def cambiarDatos(self):
         actual = self.cabeza
         if not actual:
             return
         while True:
-            actual.matriz.MatrizPatrones()  # Llamada correcta sin argumentos
+            actual.matriz.MatrizPatrones()
             actual = actual.siguiente
             if actual == self.cabeza:
                 break
+            
