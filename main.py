@@ -1,8 +1,4 @@
 import xml.etree.ElementTree as ET 
-from xml.dom import minidom
-from matrices import matriz
-from datos import data
-from ListaCircular import CircularLista
 from ListaSimple import Lista_Enlazada_Simple
 from ListaDeMatrices import ListaMatriz
 
@@ -33,7 +29,9 @@ def LeerArchivo(rutaArchivo):
         nFila = int(nombre_matriz.get('n'))#obtener el atributo n fila de la matriz
         mColumna = int(nombre_matriz.get('m'))#obtener el atributo m cplumna de la matriz
         
-        
+        if Matriz.matrizRepetida(nombreMatriz):
+            print(f"Matriz '{nombreMatriz}' Ya existe")
+            continue
         
         #imprimen, m y nombre de matriz leida
         #print(f"Procesando Matriz: {nombreMatriz}| Num de Filas: {nFila}, Num Columnas: {mColumna}")
@@ -47,10 +45,10 @@ def LeerArchivo(rutaArchivo):
             y = int(dato.get('y')) # en varible y obtiene el atributo de 'y' dentro de 'dato' como entero
             valor = int(dato.text) # dentro de la etiqueta 'dato' obtiene el texto que se encuentra adentro de y lo amacena en valor
             #print(f"Insertando: x={x}, y={y}, valor={valor}") #imprimir para verificar que si obtenga los datos
-            lista.insertar(x, y, valor) #lista contiene la lsita enlazada simple, manda los datos por el metodo insertar
+            lista.insertar(x, y, valor, nombreMatriz) #lista contiene la lsita enlazada simple, manda los datos por el metodo insertar
             
-        print(f"Matriz: {nombreMatriz}") # imprime el nombre de la matriz leida
-        Matriz.insertarmatrix(lista) #lista enlazada de matricecs inserta los datos leidos por la lista enlazada 'lista' 
+        #print(f"Matriz: {nombreMatriz}") # imprime el nombre de la matriz leida
+        Matriz.insertarmatrix(lista, nombre_matriz) #lista enlazada de matricecs inserta los datos leidos por la lista enlazada 'lista' 
         lista.imprimir()
         
     print('Datos leídos con éxito con ElementTree')
@@ -72,14 +70,15 @@ if __name__ == '__main__':
             
         elif opcion == 2:
             print('-------------------------------------------------------------')
-            print('Se eligio la opcion 2')
+            print()
+            print('Procesando Matriz')
+            print('Imprimiendo Matrices')
             if cargada:
                 #toda vez exista algun archivo cargado
                 print("Matrices originales////////////////////////////")
                 cargada.imprimir() #imprimir originales
-                cargada.cambiarDatos()#cambia originales a 1 y 0
                 print("Matrices Nuevas////////////////////////////////")
-                cargada.imprimir()# imprime las cambiadas
+                cargada.procesar_matrices()  # Procesa e imprime las matrices
                 
             else:
                 print('No hay matrices cargadas.')
