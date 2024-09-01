@@ -45,17 +45,31 @@ class ListaMatriz:
         actual = self.cabeza
         while actual:
             matriz = actual.matriz
-            matriz.MatrizPatrones()  # Procesa la matriz para cambiar valores a 1 y 0
-            print(f"Matriz procesada '{matriz.nombre}':")
-            matriz.imprimir()  # Imprime la matriz procesada
 
-            cabeza_resultado = matriz.sumar_filas_identicas()
+            matriz_copia = self.copiar_matriz(matriz)
+            matriz_copia.MatrizPatrones()
+
+            cabeza_resultado = matriz.sumar_filas_identicas_referencia(matriz_copia)
             print(f"Matriz con filas idénticas sumadas '{matriz.nombre}':")
+            matriz_copia.imprimir()
             matriz.imprimir_matriz_resultado(cabeza_resultado)
-            
+
             actual = actual.siguiente
             if actual == self.cabeza:
                 break
+
+            
+    def copiar_matriz(self, matriz):
+        # Crea una nueva instancia de Lista_Enlazada_Simple con las mismas dimensiones y nombre
+        copia = Lista_Enlazada_Simple(matriz.n, matriz.m, matriz.nombre)
         
-  
+        # Copia cada nodo de la matriz original a la nueva matriz
+        actual = matriz.cabeza
+        while True:
+            copia.insertar(actual.posx, actual.posy, actual.valor, actual.nombre)
+            actual = actual.siguiente
+            if actual == matriz.cabeza:
+                break
+        
+        return copia    
     

@@ -1,17 +1,40 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <matrices>
-    <matriz nombre="Recursos" n="3" m="3">
-        <dato x="1" y="1">5</dato>
-        <dato x="1" y="2">6</dato>
+    
+    <matriz nombre="Recursos 1" n="4" m="3">
+        <dato x="1" y="1">2</dato>
+        <dato x="1" y="2">0</dato>
         <dato x="1" y="3">0</dato>
+
+        <dato x="2" y="1">2</dato>
+        <dato x="2" y="2">0</dato>
+        <dato x="2" y="3">0</dato>
+
+        <dato x="3" y="1">2</dato>
+        <dato x="3" y="2">0</dato>
+        <dato x="3" y="3">0</dato>
+
+        <dato x="4" y="1">2</dato>
+        <dato x="4" y="2">0</dato>
+        <dato x="4" y="3">0</dato>
+
+       
+    </matriz>
+
+    <matriz nombre="Recursos 2" n="4" m="2">
+        <dato x="1" y="1">2</dato>
+        <dato x="1" y="2">0</dato>
 
         <dato x="2" y="1">0</dato>
         <dato x="2" y="2">1</dato>
-        <dato x="2" y="3">0</dato>
-    
-        <dato x="3" y="1">2</dato>
-        <dato x="3" y="2">3</dato>
-        <dato x="3" y="3">0</dato>
+
+        <dato x="3" y="1">0</dato>
+        <dato x="3" y="2">0</dato>
+
+        <dato x="4" y="1">1</dato>
+        <dato x="4" y="2">8</dato>
+
+
        
     </matriz>
     

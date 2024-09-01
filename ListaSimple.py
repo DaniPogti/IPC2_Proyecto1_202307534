@@ -92,35 +92,82 @@ class Lista_Enlazada_Simple: # la lista es circular pero le puse simple, mi erro
             suma += valor1
         return True, suma
     
-    def sumar_filas_identicas(self):
-        # Crear la cabeza de la lista de nodos resultado
+    def sumar_filas_identicas(self, referencia):
         cabeza_resultado = None
         ultimo_nodo = None
-        
-        # Recorre cada fila para encontrar filas idénticas y sumar los valores
-        for fila1 in range(1, self.n + 1):
-            for fila2 in range(fila1 + 1, self.n + 1):
-                filas_identicas, suma = self.sonFilasIdenticas(fila1, fila2)
-                if filas_identicas:
+
+        fila_actual = 1
+        while fila_actual <= self.n:
+            if referencia.esta_fila_procesada(fila_actual):
+                fila_actual += 1
+                continue  # Si la fila ya fue procesada, pasar a la siguiente
+
+            fila_duplicada = False
+            
+            fila_comparada = fila_actual + 1
+            while fila_comparada <= self.n:
+                if not referencia.esta_fila_procesada(fila_comparada) and referencia.sonFilasIdenticas(fila_actual, fila_comparada):
+                    fila_duplicada = True
+                    
+                    # Sumar las filas idénticas
                     for columna in range(1, self.m + 1):
-                        valor1 = self.obtenerValor(fila1, columna)
-                        valor2 = self.obtenerValor(fila2, columna)
-                        suma_valor = valor1 + valor2
-                        nuevo_nodo = NodoMatrizResultado(fila1, columna, suma_valor)
-                        
+                        valor_fila = self.obtenerValor(fila_actual, columna)
+                        valor_fila_comparada = self.obtenerValor(fila_comparada, columna)
+                        suma_valor = valor_fila + valor_fila_comparada
+
+                        # Insertar el resultado en la lista resultante
+                        nuevo_nodo = NodoMatrizResultado(fila_actual, columna, suma_valor)
+
                         if cabeza_resultado is None:
                             cabeza_resultado = nuevo_nodo
                             ultimo_nodo = nuevo_nodo
                         else:
                             ultimo_nodo.siguiente = nuevo_nodo
                             ultimo_nodo = nuevo_nodo
-                            
-                    for columna in range(1, self.m + 1):
-                        nodo = self.obtenerValor(fila2, columna)
-                        if nodo:
-                            nodo.valor = 0
+                    
+                    # Marcar la fila duplicada como procesada
+                    referencia.marcar_fila_como_procesada(fila_comparada)
+                
+                fila_comparada += 1
+
+            # Si la fila no tenía duplicados o ya fue procesada, se mantiene tal cual
+            if not fila_duplicada:
+                for columna in range(1, self.m + 1):
+                    valor = self.obtenerValor(fila_actual, columna)
+                    nuevo_nodo = NodoMatrizResultado(fila_actual, columna, valor)
+                    if cabeza_resultado is None:
+                        cabeza_resultado = nuevo_nodo
+                        ultimo_nodo = nuevo_nodo
+                    else:
+                        ultimo_nodo.siguiente = nuevo_nodo
+                        ultimo_nodo = nuevo_nodo
+
+            # Marcar la fila actual como procesada después de usarla
+            referencia.marcar_fila_como_procesada(fila_actual)
+
+            fila_actual += 1
 
         return cabeza_resultado
+
+    def esta_fila_procesada(self, fila):
+        nodo = self.cabeza
+        while nodo:
+            if nodo.fila == fila:
+                return nodo.procesada
+            nodo = nodo.siguiente
+            if nodo == self.cabeza:  # Para listas circulares
+                break
+        return False
+
+    def marcar_fila_como_procesada(self, fila):
+        nodo = self.cabeza
+        while nodo:
+            if nodo.fila == fila:
+                nodo.procesada = True
+            nodo = nodo.siguiente
+            if nodo == self.cabeza:  # Para listas circulares
+                break
+
 
     def imprimir_matriz_resultado(self, cabeza_resultado):
         if cabeza_resultado is None:
@@ -128,11 +175,10 @@ class Lista_Enlazada_Simple: # la lista es circular pero le puse simple, mi erro
             return
         
         print("============================================================================================")
-        print(f"Nombre de la Matriz: {self.nombre} | Con Filas N: {self.n} y Columnas M: {self.m}")
+        print(f"!!!!!!Nombre de la Matriz Reducida!!!!!: {self.nombre} | Con Filas N: {self.n} y Columnas M: {self.m}")
 
         for fila in range(1, self.n + 1):
-            columna = 1
-            while columna <= self.m:
+            for columna in range(1, self.m + 1):
                 nodo = cabeza_resultado
                 encontrado = False
                 while nodo:
@@ -143,9 +189,56 @@ class Lista_Enlazada_Simple: # la lista es circular pero le puse simple, mi erro
                     nodo = nodo.siguiente
                 
                 if not encontrado:
-                    print("| ", 0, end=" |")
-                columna += 1
+                    # Retrieve the original value from the matrix and print it instead of 0
+                    valor_original = self.obtenerValor(fila, columna)
+                    print("| ", valor_original, end=" |")
             print()
         print("============================================================================================")
+
             
-       
+    def sumar_filas_identicas_referencia(self, referencia):
+    # Crear la cabeza de la lista de nodos resultado
+        cabeza_resultado = None
+        ultimo_nodo = None
+
+        fila_actual = 1  # Controla la fila actual que se está comparando
+
+        while fila_actual <= self.n:
+            # Marcar la fila actual para evitar re-procesarla
+            referencia.marcar_fila_como_procesada(fila_actual)
+
+            columna_actual = 1  # Itera por cada columna
+
+            while columna_actual <= self.m:
+                # Inicializar la suma para esta columna
+                suma_valor = 0
+                fila_a_sumar = fila_actual
+
+                while fila_a_sumar <= self.n:
+                    # Obtener si las filas son idénticas y la suma
+                    son_identicas, suma_filas = referencia.sonFilasIdenticas(fila_actual, fila_a_sumar)
+                    
+                    if son_identicas:
+                        # Sumar los valores de todas las filas idénticas
+                        suma_valor += self.obtenerValor(fila_a_sumar, columna_actual)
+                        referencia.marcar_fila_como_procesada(fila_a_sumar)  # Marcar fila como procesada
+
+                    fila_a_sumar += 1
+
+                # Crear un nuevo nodo para almacenar el resultado de la suma
+                nuevo_nodo = NodoMatrizResultado(fila_actual, columna_actual, suma_valor)
+
+                # Si es el primer nodo, se convierte en la cabeza de la lista
+                if cabeza_resultado is None:
+                    cabeza_resultado = nuevo_nodo
+                    ultimo_nodo = nuevo_nodo
+                else:
+                    # Si no, se enlaza al final de la lista
+                    ultimo_nodo.siguiente = nuevo_nodo
+                    ultimo_nodo = nuevo_nodo
+
+                columna_actual += 1
+
+            fila_actual += 1
+
+        return cabeza_resultado       

@@ -3,4 +3,5 @@ class NodoMatrizResultado:
         self.fila = fila
         self.columna = columna
         self.valor = valor
+        
         self.siguiente = None
