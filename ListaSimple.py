@@ -1,5 +1,7 @@
 from datoNodo import NodoDato
 from NodoR import NodoMatrizResultado
+from os import startfile, system
+import os
 
 class Lista_Enlazada_Simple: # la lista es circular pero le puse simple, mi error 
     def __init__(self, n, m, nombre): #atributos de n filas, m columnas y nombre de matriz
@@ -34,6 +36,69 @@ class Lista_Enlazada_Simple: # la lista es circular pero le puse simple, mi erro
             actual.siguiente = nodoNuevo #cuando encuentra el ultimo nodo, apunte al nuevo nodo, y uñada uno nuevo
             nodoNuevo.siguiente = self.cabeza #apunta de nuevo a la cabeza
             
+    def crearGraphviz(self):
+        if self.n == 0 or self.m == 0:
+            print("Fuera de rango n y m")
+            return
+        
+        textoDot = '''
+        digraph Matrices {
+            node [shape=circle];
+            
+            // Posicionar el nodo 'nodeMatrices' en la parte superior
+            nodeMatrices [label="matrices"];
+            
+            // Posicionar el nodo 'nodeNomMatriz' justo debajo de 'nodeMatrices'
+            nodeNomMatriz [label="''' + self.nombre + '''"];
+            nodeMatrices -> nodeNomMatriz;
+            
+            // Posicionar 'nodeN' y 'nodeM' a la derecha de 'nodeNomMatriz'
+            nodeN [label="n=''' + str(self.n) + '''"];
+            nodeM [label="m=''' + str(self.m) + '''"];
+            nodeNomMatriz -> nodeN;
+            nodeNomMatriz -> nodeM;
+            
+            {rank=same; nodeN; nodeM;}  // Asegurar que 'nodeN' y 'nodeM' estén en el mismo rango
+
+            // Crear los nodos para la matriz
+            '''
+        
+        actual = self.cabeza
+        for i in range(self.n):
+            for j in range(self.m):
+                textoDot += f'node{i}{j} [label="{actual.valor}"];\n'
+                actual = actual.siguiente
+        
+       
+        
+        # Crear las conexiones verticales (por columnas)
+        for i in range(self.n - 1):
+            for j in range(self.m):
+                textoDot += f'node{i}{j} -> node{i + 1}{j} [dir=none];\n'
+        
+        # Asegurar que los nodos estén en el mismo rango por filas (formato de matriz)
+        for i in range(self.n):
+            textoDot += "{rank=same; "
+            for j in range(self.m):
+                textoDot += f'node{i}{j};\n'
+            textoDot += "}\n"
+            
+        for j in range(self.m):
+            textoDot += f'nodeNomMatriz -> node0{j};\n'
+        
+        textoDot += '''
+        }  // Fin del grafo Matrices
+        '''
+        
+        # Guardar el archivo DOT
+        
+        with open("EjemploDot.dot", "w") as dot_file:
+            dot_file.write(textoDot)
+        
+        ruta_dot = '"C:\\Program Files\\Graphviz\\bin\\dot.exe"'
+        system(ruta_dot + ' -Tpdf EjemploDot.dot -o ' + self.nombre + ".pdf")
+        
+
             
     def imprimir(self):
         if self.n <= 0 or self.m <= 0:

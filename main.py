@@ -177,7 +177,26 @@ if __name__ == '__main__':
         elif opcion == 5:
             print('-------------------------------------------------------------')
             print('Se eligio la opcion 5')
-            break
+            if not cargada or not cargada.cabeza:
+                print("No hay matrices cargadas.")
+                continue
+            
+            nombre_matriz = input("Ingrese el nombre de la matriz que desea graficar: ")
+            
+            actual = cargada.cabeza
+            while True:
+                if actual.matriz.nombre == nombre_matriz:
+                    actual.matriz.crearGraphviz()  # Llamada al método crearGraphviz para la matriz encontrada
+                    encontrada = True
+                    break
+                actual = actual.siguiente
+                if actual == cargada.cabeza:  # Si vuelve a la cabeza, terminar el ciclo
+                    break
+    
+            if not encontrada:
+                print(f"No se encontró ninguna matriz con el nombre '{nombre_matriz}'.")
+                
+                
         elif opcion == 6:
             print('-------------------------------------------------------------')
             print('Adios :)')
