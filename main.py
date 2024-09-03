@@ -106,18 +106,20 @@ def EscribirArchivoMD(cargada):
         
         # Añadir los datos de la matriz al elemento <matriz>
         nodo_dato = actual.matriz.cabeza
-        while True:
-            dato_element = doc.createElement('dato')
-            dato_element.setAttribute('x', str(nodo_dato.posx))
-            dato_element.setAttribute('y', str(nodo_dato.posy))
-            dato_text = doc.createTextNode(str(nodo_dato.valor))
-            dato_element.appendChild(dato_text)
-            matriz_element.appendChild(dato_element)
-            
-            nodo_dato = nodo_dato.siguiente
-            if nodo_dato == actual.matriz.cabeza:
-                break
-        
+        try:
+            while True:
+                dato_element = doc.createElement('dato')
+                dato_element.setAttribute('x', str(nodo_dato.posx))
+                dato_element.setAttribute('y', str(nodo_dato.posy))
+                dato_text = doc.createTextNode(str(nodo_dato.valor))
+                dato_element.appendChild(dato_text)
+                matriz_element.appendChild(dato_element)
+                
+                nodo_dato = nodo_dato.siguiente
+                if nodo_dato == actual.matriz.cabeza:
+                    break
+        except:
+            print("error.... Existe una matriz errorea o ilegible")
         # Añadir la matriz al elemento raíz <matrices>
         root.appendChild(matriz_element)
         

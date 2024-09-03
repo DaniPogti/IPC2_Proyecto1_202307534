@@ -1,6 +1,5 @@
 from NodoMatrices import NodoMatriz
 from ListaSimple import Lista_Enlazada_Simple
-from xml.dom.minidom import Document
 
 class ListaMatriz: 
     def __init__(self):
@@ -44,37 +43,43 @@ class ListaMatriz:
     
     def procesarMatrices(self):
         actual = self.cabeza
-        while actual:
-            matriz = actual.matriz
+        try:
+            while actual:
+                matriz = actual.matriz
 
-            matriz_copia = self.copiar_matriz(matriz)
-            matriz_copia.MatrizPatrones()
+                matriz_copia = self.copiar_matriz(matriz)
+                matriz_copia.MatrizPatrones()
 
-            cabeza_resultado = matriz.sumarfR(matriz_copia)
-            print(f"Matriz con filas idénticas sumadas '{matriz.nombre}':")
-            matriz_copia.imprimir()
-            matriz.imprimirResultado(cabeza_resultado)
+                cabeza_resultado = matriz.sumarfR(matriz_copia)
+                print(f"Matriz con filas idénticas sumadas '{matriz.nombre}':")
+                matriz_copia.imprimir()
+                matriz.imprimirResultado(cabeza_resultado)
 
-            actual = actual.siguiente
-            if actual == self.cabeza:
-                break
+                actual = actual.siguiente
+                if actual == self.cabeza:
+                    break
+        except: 
+            print("error.... Existe una matriz errorea o ilegible")
 
             
     def copiar_matriz(self, matriz):
-        # Crea una nueva instancia de Lista_Enlazada_Simple con las mismas dimensiones y nombre
+        
         copia = Lista_Enlazada_Simple(matriz.n, matriz.m, matriz.nombre)
         
         # Copia cada nodo de la matriz original a la nueva matriz
         actual = matriz.cabeza
-        while True:
-            copia.insertar(actual.posx, actual.posy, actual.valor, actual.nombre)
-            actual = actual.siguiente
-            if actual == matriz.cabeza:
-                break
-        
-        return copia    
+        try:
+            while True:
+                copia.insertar(actual.posx, actual.posy, actual.valor, actual.nombre)
+                actual = actual.siguiente
+                if actual == matriz.cabeza:
+                    break
+            
+            return copia 
+        except:
+            print("error.... Existe una matriz errorea o ilegible")   
     
-    def generar_xml_matrices_reducidas(self, archivo_salida):
+    '''def generar_xml_matrices_reducidas(self, archivo_salida): #ya no se uso esto :(
         doc = Document()
 
         root = doc.createElement("Matrices")
@@ -112,4 +117,4 @@ class ListaMatriz:
                 break
 
         with open(archivo_salida, 'w') as f:
-            f.write(doc.toprettyxml(indent="  "))
+            f.write(doc.toprettyxml(indent="  "))'''
