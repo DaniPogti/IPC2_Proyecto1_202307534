@@ -82,7 +82,6 @@ def LeerArchivo(rutaArchivo):
     print('Datos leídos con éxito con ElementTree')
     return Matriz #retorna matriz almacenada
 
-
 def EscribirArchivoMD(cargada):
     
     if not cargada or not cargada.cabeza:
@@ -133,8 +132,6 @@ def EscribirArchivoMD(cargada):
     
     print("Archivo XML generado con éxito.")
     
-        
-
 if __name__ == '__main__':
     opcion = 0
     cargada = None
@@ -158,7 +155,7 @@ if __name__ == '__main__':
                 print("Matrices originales////////////////////////////")
                 cargada.imprimir() #imprimir originales
                 print("Matrices Nuevas////////////////////////////////")
-                cargada.procesar_matrices()  # Procesa e imprime las matrices
+                cargada.procesarMatrices()  # Procesa e imprime las matrices
                 
             else:
                 print('No hay matrices cargadas.')

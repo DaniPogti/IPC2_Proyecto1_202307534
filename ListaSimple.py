@@ -147,7 +147,7 @@ class Lista_Enlazada_Simple: # la lista es circular pero le puse simple, mi erro
                 break
         return 0
 
-    def sonFilasIdenticas(self, fila1, fila2):
+    def FilasIguales(self, fila1, fila2):
         suma = 0
         for j in range(1, self.m + 1):
             valor1 = self.obtenerValor(fila1, j)
@@ -157,13 +157,13 @@ class Lista_Enlazada_Simple: # la lista es circular pero le puse simple, mi erro
             suma += valor1
         return True, suma
     
-    def sumar_filas_identicas(self, referencia):
+    def sumarFilas(self, referencia):
         cabeza_resultado = None
         ultimo_nodo = None
 
         fila_actual = 1
         while fila_actual <= self.n:
-            if referencia.esta_fila_procesada(fila_actual):
+            if referencia.filaProcesada(fila_actual):
                 fila_actual += 1
                 continue  # Si la fila ya fue procesada, pasar a la siguiente
 
@@ -171,7 +171,7 @@ class Lista_Enlazada_Simple: # la lista es circular pero le puse simple, mi erro
             
             fila_comparada = fila_actual + 1
             while fila_comparada <= self.n:
-                if not referencia.esta_fila_procesada(fila_comparada) and referencia.sonFilasIdenticas(fila_actual, fila_comparada):
+                if not referencia.filaProcesada(fila_comparada) and referencia.FilasIguales(fila_actual, fila_comparada):
                     fila_duplicada = True
                     
                     # Sumar las filas idénticas
@@ -191,7 +191,7 @@ class Lista_Enlazada_Simple: # la lista es circular pero le puse simple, mi erro
                             ultimo_nodo = nuevo_nodo
                     
                     # Marcar la fila duplicada como procesada
-                    referencia.marcar_fila_como_procesada(fila_comparada)
+                    referencia.marcarFila(fila_comparada)
                 
                 fila_comparada += 1
 
@@ -208,13 +208,13 @@ class Lista_Enlazada_Simple: # la lista es circular pero le puse simple, mi erro
                         ultimo_nodo = nuevo_nodo
 
             # Marcar la fila actual como procesada después de usarla
-            referencia.marcar_fila_como_procesada(fila_actual)
+            referencia.marcarFila(fila_actual)
 
             fila_actual += 1
 
         return cabeza_resultado
 
-    def esta_fila_procesada(self, fila):
+    def filaProcesada(self, fila):
         nodo = self.cabeza
         while nodo:
             if nodo.fila == fila:
@@ -224,7 +224,7 @@ class Lista_Enlazada_Simple: # la lista es circular pero le puse simple, mi erro
                 break
         return False
 
-    def marcar_fila_como_procesada(self, fila):
+    def marcarFila(self, fila):
         nodo = self.cabeza
         while nodo:
             if nodo.fila == fila:
@@ -234,7 +234,7 @@ class Lista_Enlazada_Simple: # la lista es circular pero le puse simple, mi erro
                 break
 
 
-    def imprimir_matriz_resultado(self, cabeza_resultado):
+    def imprimirResultado(self, cabeza_resultado):
         if cabeza_resultado is None:
             print("No hay resultados para mostrar.")
             return
@@ -261,7 +261,7 @@ class Lista_Enlazada_Simple: # la lista es circular pero le puse simple, mi erro
         print("============================================================================================")
 
             
-    def sumar_filas_identicas_referencia(self, referencia):
+    def sumarfR(self, referencia):
     # Crear la cabeza de la lista de nodos resultado
         cabeza_resultado = None
         ultimo_nodo = None
@@ -270,7 +270,7 @@ class Lista_Enlazada_Simple: # la lista es circular pero le puse simple, mi erro
 
         while fila_actual <= self.n:
             # Marcar la fila actual para evitar re-procesarla
-            referencia.marcar_fila_como_procesada(fila_actual)
+            referencia.marcarFila(fila_actual)
 
             columna_actual = 1  # Itera por cada columna
 
@@ -281,12 +281,12 @@ class Lista_Enlazada_Simple: # la lista es circular pero le puse simple, mi erro
 
                 while fila_a_sumar <= self.n:
                     # Obtener si las filas son idénticas y la suma
-                    son_identicas, suma_filas = referencia.sonFilasIdenticas(fila_actual, fila_a_sumar)
+                    son_identicas, suma_filas = referencia.FilasIguales(fila_actual, fila_a_sumar)
                     
                     if son_identicas:
                         # Sumar los valores de todas las filas idénticas
                         suma_valor += self.obtenerValor(fila_a_sumar, columna_actual)
-                        referencia.marcar_fila_como_procesada(fila_a_sumar)  # Marcar fila como procesada
+                        referencia.marcarFila(fila_a_sumar)  # Marcar fila como procesada
 
                     fila_a_sumar += 1
 

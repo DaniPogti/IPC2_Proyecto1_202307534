@@ -42,7 +42,7 @@ class ListaMatriz:
                 break
             
     
-    def procesar_matrices(self):
+    def procesarMatrices(self):
         actual = self.cabeza
         while actual:
             matriz = actual.matriz
@@ -50,10 +50,10 @@ class ListaMatriz:
             matriz_copia = self.copiar_matriz(matriz)
             matriz_copia.MatrizPatrones()
 
-            cabeza_resultado = matriz.sumar_filas_identicas_referencia(matriz_copia)
+            cabeza_resultado = matriz.sumarfR(matriz_copia)
             print(f"Matriz con filas idénticas sumadas '{matriz.nombre}':")
             matriz_copia.imprimir()
-            matriz.imprimir_matriz_resultado(cabeza_resultado)
+            matriz.imprimirResultado(cabeza_resultado)
 
             actual = actual.siguiente
             if actual == self.cabeza:
@@ -85,7 +85,7 @@ class ListaMatriz:
             matriz = actual.matriz
             matriz_copia = self.copiar_matriz(matriz)
             matriz_copia.MatrizPatrones()
-            cabeza_resultado = matriz.sumar_filas_identicas_referencia(matriz_copia)
+            cabeza_resultado = matriz.sumarfR(matriz_copia)
 
             matriz_elemento = doc.createElement("Matriz")
             nombre_elemento = doc.createElement("Nombre")
