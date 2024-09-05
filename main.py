@@ -120,7 +120,7 @@ def EscribirArchivoMD(cargada):
                     break
         except:
             print("error.... Existe una matriz errorea o ilegible")
-        # Añadir la matriz al elemento raíz <matrices>
+        # Añadir la matriz al elemento raíz matrices
         root.appendChild(matriz_element)
         
         # Avanzar al siguiente nodo de la lista circular
@@ -189,7 +189,7 @@ if __name__ == '__main__':
                     encontrada = True
                     break
                 actual = actual.siguiente
-                if actual == cargada.cabeza:  # Si vuelve a la cabeza, terminar el ciclo
+                if actual == cargada.cabeza:  # Si vuelve a la cabeza, terminar el ciclo d
                     break
     
             if not encontrada:
